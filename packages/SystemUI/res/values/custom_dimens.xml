@@ -73,6 +73,8 @@
     <!-- Membar spacing -->
     <dimen name="recents_membar_spacing">12dp</dimen>
 
+    <dimen name="qs_detail_item_height_twoline">72dp</dimen>
+
     <!-- Slim recent -->
     <dimen name="recent_width">230dp</dimen>
     <dimen name="slim_recents_elevation">20dp</dimen>
