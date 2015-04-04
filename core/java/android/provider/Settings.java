@@ -4136,28 +4136,39 @@ public final class Settings {
          */
         public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
 
+	/**
+         * show the membar in recents
+         *  @hide
+         */
+        public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
+
         /**
          * bitfield for show time/date/alarm
          * 0 hide completely
          * @hide
          */
         public static final int LOCK_CLOCK_TIME =  1;
+
         /**
          * @hide
          */
         public static final int LOCK_CLOCK_DATE =  2;
+
         /**
          * @hide
          */
         public static final int LOCK_CLOCK_ALARM = 4;
+
         /**
          * @hide
          */
         public static final int LOCK_CLOCK_SHADOW = 8;
+
         /**
          * @hide
          */
         public static final int LOCK_CLOCK_NONE = 0;
+
         /**
          * @hide
          */
