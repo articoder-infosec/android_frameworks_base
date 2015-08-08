@@ -4042,9 +4042,14 @@ public final class Settings {
         public static final String LOCK_CLOCK_ENABLE = "lockscreen_clock_enable";
 
         /**
+         * Three Finger Gesture from Oppo
+         * @hide
+         */
+        public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
+
+        /**
          * bitfield for show time/date/alarm
          * 0 hide completely
-         *
          * @hide
          */
         public static final int LOCK_CLOCK_TIME =  1;
