@@ -73,6 +73,10 @@
     <string name="quick_settings_compass_W">W</string>
     <string name="quick_settings_compass_NW">NW</string>
 
+    <!-- Reboot/Recovery QS Tile -->
+    <string name="quick_settings_reboot_label">Reboot</string>
+    <string name="quick_settings_reboot_recovery_label">Recovery</string>
+
     <!-- Screenshot Crop & Share -->
     <string name="action_delete_success">Deleted</string>
     <string name="action_delete_fault">Deleting was unsuccessful</string>
@@ -85,12 +89,6 @@
     <string name="pref_crop_behavior_title">Crop behavior</string>
     <string name="pref_crop_behavior_summary">Use the cropped image even if the original one hasn\'t actually been cropped with the crop action</string>
     <string name="action_ok">OK</string>
-
-    <!-- Screenshot Crop & Share -->
-    <string name="action_delete_success">Deleted</string>
-    <string name="action_delete_fault">Deleting was unsuccessful</string>
-    <string name="action_save_success">Saved</string>
-    <string name="action_save_fault">Saving was unsuccessful</string>
     <string name="action_edit">Edit</string>
 
      <!-- Sync QS Tile -->
@@ -183,5 +181,8 @@
     <!-- Typing virtual buttons -->
     <string name="accessibility_dpad_left">Cursor left</string>
     <string name="accessibility_dpad_right">Cursor right</string>
+
+    <string name="status_bar_notification_info_overflow" translatable="false">\u221E</string>
+
 
 </resources>

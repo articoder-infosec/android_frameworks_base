@@ -105,7 +105,7 @@
 
     <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
     <string name="quick_settings_tiles_stock" translatable="false">
-        wifi,cell,battery,androidauto,dnd,flashlight,compass,rotation,bt,airplane,location,hotspot,inversion,saver,work,cast,themes,night
+        wifi,cell,battery,androidauto,dnd,flashlight,compass,rotation,bt,airplane,location,hotspot,inversion,saver,work,cast,themes,night,reboot
     </string>
 
     <!-- The tiles to display in QuickSettings -->
