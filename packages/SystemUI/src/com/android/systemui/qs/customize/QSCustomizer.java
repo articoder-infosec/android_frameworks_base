@@ -218,6 +218,10 @@ public class QSCustomizer extends LinearLayout implements OnMenuItemClickListene
         }
     }
 
+    public boolean isShown() {
+        return isShown;
+    }
+
     private void setCustomizing(boolean customizing) {
         mCustomizing = customizing;
         mQsContainer.notifyCustomizeChanged();
@@ -394,7 +398,9 @@ public class QSCustomizer extends LinearLayout implements OnMenuItemClickListene
     private final AnimatorListener mExpandAnimationListener = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
-            setCustomizing(true);
+            if (isShown) {
+                setCustomizing(true);
+            }
             mNotifQsContainer.setCustomizerAnimating(false);
         }
 
