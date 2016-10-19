@@ -4334,6 +4334,12 @@ public final class Settings {
         public static final String LOCK_SCREEN_WEATHER_NUMBER_OF_NOTIFICATIONS = "lock_screen_weather_number_of_notifications";
 
         /**
+         * Enable double tap gesture anywhere on the lock screen put device to sleep
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_ANYWHERE = "double_tap_sleep_anywhere";
+
+        /**
          * Number of notifications visible on the lockscreen including the overflow container
          * @hide
          */
