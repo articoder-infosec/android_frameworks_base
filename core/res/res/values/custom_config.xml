@@ -105,4 +105,7 @@
     <string name="operator_ping_url" translatable="false"></string>
     <!-- Zero Balance feature enable config -->
     <bool name="config_zero_balance_operator">false</bool>
+
+    <!-- Single handed mode config -->
+    <bool name="single_hand_mode">true</bool>
 </resources>
