@@ -58,4 +58,9 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
+
+    <!-- Tuner Theme-->
+    <style name="ExTunerSettings" parent="@android:style/Theme.Material.Settings">
+        <item name="preferenceTheme">@style/TunerPreferenceTheme</item>
+    </style>
 </resources>
