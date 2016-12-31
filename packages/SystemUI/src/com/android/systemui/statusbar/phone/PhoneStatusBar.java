@@ -521,9 +521,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         void observe() {
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_SHOW),
-                    false, this, UserHandle.USER_ALL);
-            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL),
                     false, this, UserHandle.USER_ALL);
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
@@ -585,16 +582,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             update();
         }
 
-        public void update() {
-            int showNavBar = Settings.System.getIntForUser(
-                    mContext.getContentResolver(), Settings.System.NAVIGATION_BAR_SHOW,
-                    -1, mCurrentUserId);
-            if (showNavBar != -1){
-                boolean showNavBarBool = showNavBar == 1;
-                if (showNavBarBool !=  mShowNavBar){
-                    updateNavigationBar();
-                }
-            }
+        public void update()
             mAutomaticBrightness = Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, 0, mCurrentUserId) !=
                     Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
