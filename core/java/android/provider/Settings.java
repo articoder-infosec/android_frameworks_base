@@ -3992,6 +3992,12 @@ public final class Settings {
         public static final String STATUS_BAR_CUSTOM_HEADER_IMAGE = "status_bar_custom_header_image";
 
         /**
+         * Whether to enable the pixel navbar animation
+         * @hide
+         */
+        public static final String PIXEL_NAV_ANIMATION = "pixel_nav_animation";
+
+        /**
          * @hide
          */
         public static final String BUTTON_SWAP_BACK_RECENTS = "button_swap_back_recents";
