@@ -3288,6 +3288,13 @@ public final class Settings {
 
         /** @hide */
         public static final Validator ACCELEROMETER_ROTATION_VALIDATOR = sBooleanValidator;
+        
+        /**
+         * Whether to enable status and navigation bar color in battery saver mode.
+         *
+         * @hide
+         */
+        public static final String BATTERY_SAVER_MODE_COLOR = "battery_save_mode_color";
 
         /**
          * Default screen rotation when no other policy applies.
