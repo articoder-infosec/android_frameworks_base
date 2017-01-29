@@ -3842,6 +3842,17 @@ public final class Settings {
          */
         public static final String STATUS_BAR_BRIGHTNESS_CONTROL = "status_bar_brightness_control";
 
+
+        /**
+         * Immersive recents options
+         *
+         * 0 = Default AOSP look
+         * 1 = Fullscreen
+         * 2 = Statusbar only
+         * 3 = Navbar only
+         */
+        public static final String IMMERSIVE_RECENTS = "immersive_recents";
+
         /** some devices have a extra hw button e.g. n3 on the back on the
          * fingerprint sensor. allow mapping button to key
          *
@@ -4268,16 +4279,6 @@ public final class Settings {
          * @hide
          */
         public static final String SLIM_RECENTS_ICON_PACK = "slim_recents_icon_pack";
-
-        /**
-         * Immersive recents options
-         *
-         * 0 = Default AOSP look
-         * 1 = Statusbar only
-         * 2 = Navbar only
-         * 3 = Fullscreen
-         */
-        public static final String IMMERSIVE_RECENTS = "immersive_recents";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
