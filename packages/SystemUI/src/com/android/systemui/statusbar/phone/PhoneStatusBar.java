@@ -551,6 +551,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.QS_TILE_TITLE_VISIBILITY),
                     false, this, UserHandle.USER_ALL);
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_LAYOUT_ROWS),
+                    false, this, UserHandle.USER_ALL);
+            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_LAYOUT_ROWS_LANDSCAPE),
+                    false, this, UserHandle.USER_ALL);
+            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_HIDE_MEDIA),
                     false, this, UserHandle.USER_ALL);
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
@@ -604,6 +610,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             if (mStatusBarWindow != null) {
                 mStatusBarWindow.setDoubleTabSleep(mDoubleTabSleep);
+            }
+
+            if (mQSPanel != null) {
+                updateResources();
             }
 
             if (mHeader != null) {

@@ -4340,6 +4340,18 @@ public final class Settings {
         public static final String DOUBLE_TAP_SLEEP_ANYWHERE = "double_tap_sleep_anywhere";
 
         /**
+         * Number of qs rows on portrait orientation
+         * @hide
+         */
+        public static final String QS_LAYOUT_ROWS = "qs_layout_rows";
+
+        /**
+         * Number of qs rows on landscape orientation
+         * @hide
+         */
+        public static final String QS_LAYOUT_ROWS_LANDSCAPE = "qs_layout_rows_landscape";
+
+        /**
          * Number of notifications visible on the lockscreen including the overflow container
          * @hide
          */
