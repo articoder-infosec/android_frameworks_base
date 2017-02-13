@@ -50,6 +50,7 @@ import com.android.systemui.qs.tiles.CaffeineTile;
 import com.android.systemui.qs.tiles.CastTile;
 import com.android.systemui.qs.tiles.CellularTile;
 import com.android.systemui.qs.tiles.ColorInversionTile;
+import com.android.systemui.qs.tiles.CompassTile;
 import com.android.systemui.qs.tiles.DataSaverTile;
 import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
@@ -479,6 +480,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (tileSpec.equals("music")) return new MusicTile(this);
         else if (tileSpec.equals("nfc")) return new NfcTile(this);
         else if (tileSpec.equals("screenshot")) return new ScreenshotTile(this);
+        else if (tileSpec.equals("compass")) return new CompassTile(this);
         else if (tileSpec.equals("assist")) return new GoogleAssistTile(this);
         else if (tileSpec.equals("voiceassist")) return new GoogleVoiceAssistTile(this);
         else if (tileSpec.equals("themes")) return new ThemeTile(this);
