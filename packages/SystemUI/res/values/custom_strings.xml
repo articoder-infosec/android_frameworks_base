@@ -117,6 +117,10 @@
     <string name="qs_menu_item_nine">9</string>
     <string name="qs_menu_item_reset">Reset</string>
 
+    <!-- QuickSettings: Night Display -->
+    <string name="quick_settings_night_display_warning">Please note that Night Light may increase battery consumption.</string>
+    <string name="quick_settings_night_display_hide">Do not show this warning</string>
+
     <!-- NavBar Tuner -->
     <string name="menu_ime_always_show">Menu / Keyboard Switcher (always show)</string>
     <string name="search">Search</string>
