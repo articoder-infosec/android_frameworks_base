@@ -1545,7 +1545,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 } else {
                     TaskUtils.dockTopTask(mContext);
                 }
-                mSlimRecents.startMultiWin();
+                mSlimRecents.startMultiWindow();
+                if (metricsDockAction != -1) {
+                    MetricsLogger.action(mContext, metricsDockAction);
+                }
             } else {
                 EventBus.getDefault().send(new UndockingTaskEvent());
                 if (metricsUndockAction != -1) {
