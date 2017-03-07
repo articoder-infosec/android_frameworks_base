@@ -38,4 +38,9 @@
     <!-- Recents -->
     <color name="recents_empty_dark_color">#ff4d4d4d</color>
     <color name="recents_empty_light_color">#ffb3b3b3</color>
+
+    <!-- Screenshot action colors -->
+    <color name="screenshot_flash_color">@android:color/white</color>
+    <color name="screenshot_background_color">@android:color/black</color>
+
 </resources>
