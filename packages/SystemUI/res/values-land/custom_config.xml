@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
-** Copyright 2009, The Android Open Source Project
+** Copyright 2016 The SlimRoms Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -21,20 +21,7 @@
      for different hardware and product builds. -->
 <resources>
 
-    <!-- The default tiles to display in QuickSettings -->
-    <string name="quick_settings_tiles_extra" translatable="false">
-        hotspot,inversion,saver,work,cast,caffeine,music,nfc,screenshot,assist,voiceassist,adb_network,weather,headsup
-    </string>
-
-    <!-- Allow Opa (Pixel navbar) layout -->
-    <bool name="config_allowOpaLayout">true</bool>
-
-    <!-- Clear-All recents FAB animation -->
-    <integer name="recents_animate_fab_enter_duration">225</integer>
-    <integer name="recents_animate_fab_enter_delay">275</integer>
-    <integer name="recents_animate_fab_exit_duration">125</integer>
-
     <!-- Default value how much apps show the app screenshot on recents view entry -->
-    <integer name="expanded_items_default">2</integer>
-</resources>
+    <integer name="expanded_items_default">1</integer>
 
+</resources>
