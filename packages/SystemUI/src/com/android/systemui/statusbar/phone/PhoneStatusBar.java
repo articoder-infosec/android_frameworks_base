@@ -582,7 +582,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             update();
         }
 
-        public void update()
+        public void update() { 
             mAutomaticBrightness = Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, 0, mCurrentUserId) !=
                     Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
