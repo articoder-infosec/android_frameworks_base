@@ -83,7 +83,6 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
     //private BatteryMeterView mBatteryMeterViewKeyguard;
     //private BatteryMeterView mBatteryMeterView;
     private BatteryViewManager mBatteryViewManager;
-    private TextView mClock;
     private Clock mClock;
     private Clock mCenterClock;
     private Clock mLeftClock;

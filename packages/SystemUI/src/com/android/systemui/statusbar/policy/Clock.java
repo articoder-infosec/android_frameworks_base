@@ -228,17 +228,6 @@ public class Clock extends TextView implements DemoMode {
         setContentDescription(mContentDescriptionFormat.format(mCalendar.getTime()));
     }
 
-    @Override
-    public void onTuningChanged(String key, String newValue) {
-        if (CLOCK_SECONDS.equals(key)) {
-            mShowSeconds = newValue != null && Integer.parseInt(newValue) != 0;
-            updateShowSeconds();
-        } else if (StatusBarIconController.ICON_BLACKLIST.equals(key) && mCanBlacklistClock) {
-            ArraySet<String> list = StatusBarIconController.getIconBlacklist(newValue);
-            setVisibility(list.contains("clock") ? View.GONE : View.VISIBLE);
-        }
-    }
-
     private void updateShowSeconds() {
         if (mShowSeconds) {
             // Wait until we have a display to start trying to show seconds.
