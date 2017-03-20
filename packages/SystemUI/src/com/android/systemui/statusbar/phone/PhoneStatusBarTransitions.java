@@ -32,8 +32,8 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
     private final PhoneStatusBarView mView;
     private final float mIconAlphaWhenOpaque;
 
-    private View mLeftSide, mStatusIcons, mSignalCluster, mClock, mCenterClock,
-          mNetworkTraffic, mWeatherTextView, mWeatherImageView;
+    private View mWeatherTextView, mWeatherImageView, mLeftSide, mStatusIcons, mSignalCluster,
+           mClock, mCenterClock, mNetworkTraffic, ;
     private Animator mCurrentAnimation;
 
     public PhoneStatusBarTransitions(PhoneStatusBarView view) {
@@ -44,6 +44,8 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
     }
 
     public void init() {
+        mWeatherTextView = mView.findViewById(R.id.weather_temp_omni);
+        mWeatherImageView = mView.findViewById(R.id.weather_image_omni);
         mLeftSide = mView.findViewById(R.id.notification_icon_area);
         mStatusIcons = mView.findViewById(R.id.statusIcons);
         mSignalCluster = mView.findViewById(R.id.signal_cluster);
@@ -51,8 +53,6 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
         mClock = mView.findViewById(R.id.clock);
         mCenterClock = mView.findViewById(R.id.center_clock);
         mNetworkTraffic = mView.findViewById(R.id.networkTraffic);
-        mWeatherTextView = mView.findViewById(R.id.weather_temp_omni);
-        mWeatherImageView = mView.findViewById(R.id.weather_image_omni);
         applyModeBackground(-1, getMode(), false /*animate*/);
         applyMode(getMode(), false /*animate*/);
     }
@@ -93,6 +93,8 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
         if (animate) {
             AnimatorSet anims = new AnimatorSet();
             anims.playTogether(
+                    animateTransitionTo(mWeatherTextView, newAlphaBC),
+                    animateTransitionTo(mWeatherImageView, newAlphaBC),
                     animateTransitionTo(mLeftSide, newAlpha),
                     animateTransitionTo(mStatusIcons, newAlpha),
                     animateTransitionTo(mSignalCluster, newAlpha),
@@ -100,8 +102,6 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
                     //animateTransitionTo(mBattery, newAlphaBC),
                     animateTransitionTo(mClock, newAlphaBC),
                     animateTransitionTo(mCenterClock, newAlphaBC)
-                    animateTransitionTo(mWeatherTextView, newAlphaBC),
-                    animateTransitionTo(mWeatherImageView, newAlphaBC)
                     );
             if (isLightsOut(mode)) {
                 anims.setDuration(LIGHTS_OUT_DURATION);
@@ -109,6 +109,8 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
             anims.start();
             mCurrentAnimation = anims;
         } else {
+            mWeatherTextView.setAlpha(newAlphaBC);
+            mWeatherImageView.setAlpha(newAlphaBC);
             mLeftSide.setAlpha(newAlpha);
             mStatusIcons.setAlpha(newAlpha);
             mSignalCluster.setAlpha(newAlpha);
@@ -116,8 +118,6 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
 //            mBattery.setAlpha(newAlphaBC);
             mClock.setAlpha(newAlphaBC);
             mCenterClock.setAlpha(newAlphaBC);
-            mWeatherTextView.setAlpha(newAlphaBC);
-            mWeatherImageView.setAlpha(newAlphaBC);
         }
     }
 }

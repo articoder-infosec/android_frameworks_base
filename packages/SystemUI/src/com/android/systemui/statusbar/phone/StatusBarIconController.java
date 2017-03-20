@@ -132,6 +132,8 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
                 com.android.internal.R.array.config_statusBarIcons));
         mContext = context;
         mPhoneStatusBar = phoneStatusBar;
+        mWeatherTextView = (TextView) statusBar.findViewById(R.id.weather_temp_omni);
+        mWeatherImageView = (ImageView) statusBar.findViewById(R.id.weather_image_omni);
         mSystemIconArea = (LinearLayout) statusBar.findViewById(R.id.system_icon_area);
         mStatusIcons = (LinearLayout) statusBar.findViewById(R.id.statusIcons);
         mSignalCluster = (SignalClusterView) statusBar.findViewById(R.id.signal_cluster);
@@ -161,8 +163,6 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
         mNetworkTraffic = (NetworkTraffic) statusBar.findViewById(R.id.networkTraffic);
 
         mHandler = new Handler();
-        mWeatherTextView = (TextView) statusBar.findViewById(R.id.weather_temp_omni);
-        mWeatherImageView = (ImageView) statusBar.findViewById(R.id.weather_image_omni);
         loadDimens();
 
         mClock.setStatusBarIconController(this);
