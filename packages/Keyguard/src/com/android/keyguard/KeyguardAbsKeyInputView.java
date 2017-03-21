@@ -162,6 +162,7 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
         if (matched) {
 	    mLockPatternUtils.sanitizePassword();
             mCallback.reportUnlockAttempt(userId, true, 0);
+            mLockPatternUtils.getLockoutAttemptDeadline(userId);
             if (dismissKeyguard) {
                 mDismissing = true;
                 mCallback.dismiss(true);
