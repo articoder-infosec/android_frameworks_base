@@ -1547,12 +1547,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (!isInLockTaskMode) {
                 int dockSide = WindowManagerProxy.getInstance().getDockSide();
                 if (dockSide == WindowManager.DOCKED_INVALID) {
-                    if (!mOmniSwitchRecents) {
-                        mRecents.dockTopTask(NavigationBarGestureHelper.DRAG_MODE_NONE,
-                                ActivityManager.DOCKED_STACK_CREATE_MODE_TOP_OR_LEFT, null, metricsDockAction);
-                    } else {
-                        TaskUtils.dockTopTask(mContext);
-                    }
                     mSlimRecents.startMultiWindow();
                     if (metricsDockAction != -1) {
                         MetricsLogger.action(mContext, metricsDockAction);
@@ -5486,6 +5480,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (mNavigationBarView != null){
                 mWindowManager.removeViewImmediate(mNavigationBarView);
                 mNavigationBarView = null;
+            }
         }
     }
 }
