@@ -2102,14 +2102,14 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         setHasNavigationBar();
         // Allow a system property to override this. Used by the emulator.
         // See also hasNavigationBar().
-        String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
+        /*String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
         if ("1".equals(navBarOverride)) {
             mHasNavigationBar = false;
             mOverWriteHasNavigationBar = true;
         } else if ("0".equals(navBarOverride)) {
             mHasNavigationBar = true;
             mOverWriteHasNavigationBar = true;
-        }
+        }*/
 
         // For demo purposes, allow the rotation of the HDMI display to be controlled.
         // By default, HDMI locks rotation to landscape.
@@ -2173,7 +2173,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
      *         navigation bar and touch exploration is not enabled
      */
     private boolean canHideNavigationBar() {
-        return mHasNavigationBar;
+        return hasNavigationBar()
+                && !mAccessibilityManager.isTouchExplorationEnabled();
     }
 
     @Override
@@ -2719,6 +2720,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     res.getDimensionPixelSize(
                             com.android.internal.R.dimen.navigation_bar_width_car_mode);
         }
+        updateSettings();
     }
 
     /** {@inheritDoc} */
