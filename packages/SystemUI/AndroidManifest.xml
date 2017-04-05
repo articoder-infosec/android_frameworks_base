@@ -176,6 +176,9 @@
     <!-- OmniJaws -->
     <uses-permission android:name="org.omnirom.omnijaws.READ_WEATHER" />
 
+    <!-- Theme profiles tile -->
+    <uses-permission android:name="android.permission.MODIFY_OVERLAYS"/>
+
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"
