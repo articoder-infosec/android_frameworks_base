@@ -3991,17 +3991,13 @@ public final class Settings {
         public static final String STATUS_BAR_CUSTOM_HEADER_SHADOW = "status_bar_custom_header_shadow";
 
         /**
-<<<<<<< HEAD
-         * header image package to use for daylight header - package name - null if default
-=======
          * Whether to show Brightness Icon On Brightness Slider
          * @hide
          */
         public static final String QS_SHOW_BRIGHTNESS_ICON = "qs_show_brightness_icon";
 
         /**
-         * Remove tile summaries in settings
->>>>>>> 23cf0b3... Add option to disable auto brightness icon in brightness slider [1/2]
+         * header image package to use for daylight header - package name - null if default
          * @hide
          */
         public static final String STATUS_BAR_DAYLIGHT_HEADER_PACK = "status_bar_daylight_header_pack";
