@@ -135,6 +135,8 @@ public final class PowerManagerService extends SystemService
     private static final int DIRTY_DOCK_STATE = 1 << 10;
     // Dirty bit: brightness boost changed
     private static final int DIRTY_SCREEN_BRIGHTNESS_BOOST = 1 << 11;
+    // Dirty bit: VR Mode enabled changed
+    private static final int DIRTY_VR_MODE_CHANGED = 1 << 12;
 
     // Summarizes the state of all active wakelocks.
     private static final int WAKE_LOCK_CPU = 1 << 0;
@@ -410,10 +412,14 @@ public final class PowerManagerService extends SystemService
     private int mScreenBrightnessSettingMinimum;
     private int mScreenBrightnessSettingMaximum;
     private int mScreenBrightnessSettingDefault;
+    private int mScreenBrightnessForVrSettingDefault;
 
     // The screen brightness setting, from 0 to 255.
     // Use -1 if no value has been set.
     private int mScreenBrightnessSetting;
+
+    // The screen brightness setting, from 0 to 255, to be used while in VR Mode.
+    private int mScreenBrightnessForVrSetting;
 
     // the current screen brightness when in adaptive mode
     // updated on every change
@@ -505,8 +511,8 @@ public final class PowerManagerService extends SystemService
     private final ArrayList<PowerManagerInternal.LowPowerModeListener> mLowPowerModeListeners
             = new ArrayList<PowerManagerInternal.LowPowerModeListener>();
 
-    // True if brightness should be affected by twilight.
-    private boolean mBrightnessUseTwilight;
+    // True if we are currently in VR Mode.
+    private boolean mIsVrModeEnabled;
 
     // button brightness suppport enablement
     private boolean mButtonBrightnessSupport = false;
@@ -614,6 +620,7 @@ public final class PowerManagerService extends SystemService
             mScreenBrightnessSettingMinimum = pm.getMinimumScreenBrightnessSetting();
             mScreenBrightnessSettingMaximum = pm.getMaximumScreenBrightnessSetting();
             mScreenBrightnessSettingDefault = pm.getDefaultScreenBrightnessSetting();
+            mScreenBrightnessForVrSettingDefault = pm.getDefaultScreenBrightnessForVrSetting();
 
             SensorManager sensorManager = new SystemSensorManager(mContext, mHandler.getLooper());
 
@@ -679,6 +686,9 @@ public final class PowerManagerService extends SystemService
                     Settings.System.SCREEN_BRIGHTNESS),
                     false, mSettingsObserver, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SCREEN_BRIGHTNESS_FOR_VR),
+                    false, mSettingsObserver, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SCREEN_BRIGHTNESS_MODE),
                     false, mSettingsObserver, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -696,15 +706,14 @@ public final class PowerManagerService extends SystemService
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.DOUBLE_TAP_TO_WAKE),
                     false, mSettingsObserver, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Secure.BRIGHTNESS_USE_TWILIGHT),
-                    false, mSettingsObserver, UserHandle.USER_ALL);
             IVrManager vrManager =
                     (IVrManager) getBinderService(VrManagerService.VR_MANAGER_BINDER_SERVICE);
-            try {
-                vrManager.registerListener(mVrStateCallbacks);
-            } catch (RemoteException e) {
-                Slog.e(TAG, "Failed to register VR mode state listener: " + e);
+            if (vrManager != null) {
+                try {
+                    vrManager.registerListener(mVrStateCallbacks);
+                } catch (RemoteException e) {
+                    Slog.e(TAG, "Failed to register VR mode state listener: " + e);
+                }
             }
             // Go.
             readConfigurationLocked();
@@ -814,11 +823,17 @@ public final class PowerManagerService extends SystemService
             }
         }
 
-        final int oldScreenBrightnessSetting = mScreenBrightnessSetting;
+        final int oldScreenBrightnessSetting = getCurrentBrightnessSettingLocked();
+
+        mScreenBrightnessForVrSetting = Settings.System.getIntForUser(resolver,
+                Settings.System.SCREEN_BRIGHTNESS_FOR_VR, mScreenBrightnessForVrSettingDefault,
+                UserHandle.USER_CURRENT);
+
         mScreenBrightnessSetting = Settings.System.getIntForUser(resolver,
                 Settings.System.SCREEN_BRIGHTNESS, mScreenBrightnessSettingDefault,
                 UserHandle.USER_CURRENT);
-        if (oldScreenBrightnessSetting != mScreenBrightnessSetting) {
+
+        if (oldScreenBrightnessSetting != getCurrentBrightnessSettingLocked()) {
             mTemporaryScreenBrightnessSettingOverride = -1;
         }
 
@@ -835,9 +850,6 @@ public final class PowerManagerService extends SystemService
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL, UserHandle.USER_CURRENT);
 
-        mBrightnessUseTwilight = Settings.Secure.getIntForUser(resolver,
-                Secure.BRIGHTNESS_USE_TWILIGHT, 0, UserHandle.USER_CURRENT) != 0;
-
         final boolean lowPowerModeEnabled = Settings.Global.getInt(resolver,
                 Settings.Global.LOW_POWER_MODE, 0) != 0;
         final boolean autoLowPowerModeConfigured = Settings.Global.getInt(resolver,
@@ -851,6 +863,10 @@ public final class PowerManagerService extends SystemService
 
         updateButtonLightSettings();
         mDirty |= DIRTY_SETTINGS;
+    }
+
+    private int getCurrentBrightnessSettingLocked() {
+        return mIsVrModeEnabled ? mScreenBrightnessForVrSetting : mScreenBrightnessSetting;
     }
 
     private void postAfterBootCompleted(Runnable r) {
@@ -2106,6 +2122,7 @@ public final class PowerManagerService extends SystemService
                 || !mDreamsSupportedConfig
                 || !mDreamsEnabledSetting
                 || !mDisplayPowerRequest.isBrightOrDim()
+                || mDisplayPowerRequest.isVr()
                 || (mUserActivitySummary & (USER_ACTIVITY_SCREEN_BRIGHT
                         | USER_ACTIVITY_SCREEN_DIM | USER_ACTIVITY_SCREEN_DREAM)) == 0
                 || !mBootCompleted) {
@@ -2150,7 +2167,7 @@ public final class PowerManagerService extends SystemService
         final boolean oldDisplayReady = mDisplayReady;
         if ((dirty & (DIRTY_WAKE_LOCKS | DIRTY_USER_ACTIVITY | DIRTY_WAKEFULNESS
                 | DIRTY_ACTUAL_DISPLAY_POWER_STATE_UPDATED | DIRTY_BOOT_COMPLETED
-                | DIRTY_SETTINGS | DIRTY_SCREEN_BRIGHTNESS_BOOST)) != 0) {
+                | DIRTY_SETTINGS | DIRTY_SCREEN_BRIGHTNESS_BOOST | DIRTY_VR_MODE_CHANGED)) != 0) {
             mDisplayPowerRequest.policy = getDesiredScreenPolicyLocked();
 
             // Determine appropriate screen brightness and auto-brightness adjustments.
@@ -2164,6 +2181,9 @@ public final class PowerManagerService extends SystemService
                 // bootloader brightness and the default brightness to be identical.
                 autoBrightness = false;
                 brightnessSetByUser = false;
+            } else if (mIsVrModeEnabled) {
+                screenBrightness = mScreenBrightnessForVrSetting;
+                autoBrightness = false;
             } else if (isValidBrightness(mScreenBrightnessOverrideFromWindowManager)) {
                 screenBrightness = mScreenBrightnessOverrideFromWindowManager;
                 autoBrightness = false;
@@ -2197,8 +2217,7 @@ public final class PowerManagerService extends SystemService
             mDisplayPowerRequest.useAutoBrightness = autoBrightness;
             mDisplayPowerRequest.useProximitySensor = shouldUseProximitySensorLocked();
             mDisplayPowerRequest.lowPowerMode = mLowPowerModeEnabled;
-            mDisplayPowerRequest.boostScreenBrightness = mScreenBrightnessBoostInProgress;
-            mDisplayPowerRequest.useTwilight = mBrightnessUseTwilight;
+            mDisplayPowerRequest.boostScreenBrightness = shouldBoostScreenBrightness();
 
             if (mDisplayPowerRequest.policy == DisplayPowerRequest.POLICY_DOZE) {
                 mDisplayPowerRequest.dozeScreenState = mDozeScreenStateOverrideFromDreamManager;
@@ -2226,6 +2245,7 @@ public final class PowerManagerService extends SystemService
                         + ", mWakeLockSummary=0x" + Integer.toHexString(mWakeLockSummary)
                         + ", mUserActivitySummary=0x" + Integer.toHexString(mUserActivitySummary)
                         + ", mBootCompleted=" + mBootCompleted
+                        + ", mIsVrModeEnabled= " + mIsVrModeEnabled
                         + ", mScreenBrightnessBoostInProgress="
                                 + mScreenBrightnessBoostInProgress);
             }
@@ -2256,6 +2276,10 @@ public final class PowerManagerService extends SystemService
         }
     }
 
+    private boolean shouldBoostScreenBrightness() {
+        return !mIsVrModeEnabled && mScreenBrightnessBoostInProgress;
+    }
+
     private static boolean isValidBrightness(int value) {
         return value >= 0 && value <= 255;
     }
@@ -2266,6 +2290,10 @@ public final class PowerManagerService extends SystemService
     }
 
     private int getDesiredScreenPolicyLocked() {
+        if (mIsVrModeEnabled) {
+            return DisplayPowerRequest.POLICY_VR;
+        }
+
         if (mWakefulness == WAKEFULNESS_ASLEEP) {
             return DisplayPowerRequest.POLICY_OFF;
         }
@@ -2375,7 +2403,7 @@ public final class PowerManagerService extends SystemService
     };
 
     private boolean shouldUseProximitySensorLocked() {
-        return (mWakeLockSummary & WAKE_LOCK_PROXIMITY_SCREEN_OFF) != 0;
+        return !mIsVrModeEnabled && (mWakeLockSummary & WAKE_LOCK_PROXIMITY_SCREEN_OFF) != 0;
     }
 
     /**
@@ -3046,7 +3074,11 @@ public final class PowerManagerService extends SystemService
             pw.println("  mScreenBrightnessSettingMinimum=" + mScreenBrightnessSettingMinimum);
             pw.println("  mScreenBrightnessSettingMaximum=" + mScreenBrightnessSettingMaximum);
             pw.println("  mScreenBrightnessSettingDefault=" + mScreenBrightnessSettingDefault);
+            pw.println("  mScreenBrightnessForVrSettingDefault="
+                    + mScreenBrightnessForVrSettingDefault);
+            pw.println("  mScreenBrightnessForVrSetting=" + mScreenBrightnessForVrSetting);
             pw.println("  mDoubleTapWakeEnabled=" + mDoubleTapWakeEnabled);
+            pw.println("  mIsVrModeEnabled=" + mIsVrModeEnabled);
 
             final int sleepTimeout = getSleepTimeoutLocked();
             final int screenOffTimeout = getScreenOffTimeoutLocked(sleepTimeout);
@@ -3173,6 +3205,14 @@ public final class PowerManagerService extends SystemService
         @Override
         public void onVrStateChanged(boolean enabled) {
             powerHintInternal(POWER_HINT_VR_MODE, enabled ? 1 : 0);
+
+            synchronized (mLock) {
+                if (mIsVrModeEnabled != enabled) {
+                    mIsVrModeEnabled = enabled;
+                    mDirty |= DIRTY_VR_MODE_CHANGED;
+                    updatePowerStateLocked();
+                }
+            }
         }
     };
 
@@ -3981,6 +4021,7 @@ public final class PowerManagerService extends SystemService
                 case Display.STATE_DOZE:
                 case Display.STATE_DOZE_SUSPEND:
                 case Display.STATE_ON:
+                case Display.STATE_VR:
                     break;
                 default:
                     screenState = Display.STATE_UNKNOWN;
