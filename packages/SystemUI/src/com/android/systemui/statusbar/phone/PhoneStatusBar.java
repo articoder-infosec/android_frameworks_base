@@ -1529,7 +1529,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 
-    private View.OnLongClickListener mLongPressBackListener = new View.OnLongClickListener() {
+   /* private View.OnLongClickListener mLongPressBackListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
             return handleLongPressBack();
@@ -1550,7 +1550,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     MetricsEvent.ACTION_WINDOW_UNDOCK_LONGPRESS);
             return true;
         }
-    };
+    };*/
 
     @Override
     protected void toggleSplitScreenMode(int metricsDockAction, int metricsUndockAction) {
