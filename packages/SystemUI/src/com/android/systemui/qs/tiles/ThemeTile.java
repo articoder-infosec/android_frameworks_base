@@ -199,7 +199,7 @@ public class ThemeTile extends QSTile<QSTile.State> {
 
         @Override
         public int getMetricsCategory() {
-            return MetricsEvent.QUICK_SETTINGS;
+            return MetricsEvent.OMNI_SETTINGS;
         }
 
         @Override
