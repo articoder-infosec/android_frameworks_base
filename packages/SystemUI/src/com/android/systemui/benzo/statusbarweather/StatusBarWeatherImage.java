@@ -125,6 +125,11 @@ public class StatusBarWeatherImage extends ImageView implements
         }
     }
 
+    @Override
+    public void weatherError() {
+        // Do nothing
+    }
+
     private void queryAndUpdateWeather() {
         try {
             if (DEBUG) Log.d(TAG, "queryAndUpdateWeather " + mEnabled);

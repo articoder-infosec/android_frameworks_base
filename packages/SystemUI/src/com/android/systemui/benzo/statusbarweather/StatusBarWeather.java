@@ -134,6 +134,11 @@ public class StatusBarWeather extends TextView implements
         }
     }
 
+    @Override
+    public void weatherError() {
+        // Do nothing
+    }
+
     private void queryAndUpdateWeather() {
         try {
             if (DEBUG) Log.d(TAG, "queryAndUpdateWeather " + mEnabled);
