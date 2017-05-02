@@ -127,7 +127,4 @@
 
     <!-- The duration (in milliseconds) of recent app screen exit animation. -->
     <integer name="config_recentExitDur">450</integer>
-
-    <!-- Wether device has dash charging support -->
-    <bool name="config_hasDashCharger">false</bool>
 </resources>
