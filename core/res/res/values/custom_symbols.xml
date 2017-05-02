@@ -159,3 +159,4 @@
 
   <!-- Wether device has dash charging support -->
   <java-symbol type="bool" name="config_hasDashCharger" />
+</resources>
