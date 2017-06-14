@@ -826,7 +826,7 @@ static jobject android_media_MediaDrm_getKeyRequest(
 
     Vector<uint8_t> request;
     String8 defaultUrl;
-    DrmPlugin::KeyRequestType keyRequestType;
+    DrmPlugin::KeyRequestType keyRequestType = DrmPlugin::kKeyRequestType_Unknown;
 
     status_t err = drm->getKeyRequest(sessionId, initData, mimeType,
             keyType, optParams, request, defaultUrl, &keyRequestType);
